@@ -1,5 +1,5 @@
-from solcx import compile_source
 from web3 import Web3
+import solcx
 import json
 
 class Contract:
@@ -17,10 +17,13 @@ class Contract:
 
     def compile_source_file(self):
 
+        if '0.8.20' not in [str(vresion) for version in solcx.get_installed_solc_versions()]:
+            solcx.install_solc('0.8.20')
+            
         with open('contract.sol', 'r') as f:
             source = f.read()
 
-        return compile_source(source,output_values=['abi','bin'])
+        return solcx.compile_source(source,output_values=['abi','bin'])
 
     def save_contract_json(self, abi, address):
 
