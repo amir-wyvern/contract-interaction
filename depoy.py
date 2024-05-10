@@ -17,13 +17,15 @@ class Contract:
 
     def compile_source_file(self):
 
-        if '0.8.20' not in [str(vresion) for version in solcx.get_installed_solc_versions()]:
+        if '0.8.20' not in [str(version) for version in solcx.get_installed_solc_versions()]:
             solcx.install_solc('0.8.20')
-            
+
         with open('contract.sol', 'r') as f:
             source = f.read()
 
-        return solcx.compile_source(source,output_values=['abi','bin'])
+        solcx.set_solc_version('0.8.20')
+        
+        return solcx.compile_source(source,output_values=['abi','bin'], evm_version="london")
 
     def save_contract_json(self, abi, address):
 
@@ -63,6 +65,7 @@ class Contract:
         if tx_receipt['status'] == 1:
             self.save_contract_json(abi= contract_interface['abi'], address= tx_receipt['contractAddress'])
 
+0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d
         else:
             print(f'Contract tx is pending to complated with tx: [{tx_hash.hex()}]')
 
