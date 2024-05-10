@@ -34,7 +34,7 @@ class Contract:
 
         transaction = self.contract.functions.setVar(new_data).build_transaction({
             'from': self.account_address,
-            'nonce': self.w3.eth.get_transaction_count(account_address)+1,
+            'nonce': self.w3.eth.get_transaction_count(account_address),
             'gas': 200000,  
             'gasPrice': self.w3.to_wei('85', 'gwei')  
         })
