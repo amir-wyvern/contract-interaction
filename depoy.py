@@ -65,7 +65,7 @@ class Contract:
         if tx_receipt['status'] == 1:
             self.save_contract_json(abi= contract_interface['abi'], address= tx_receipt['contractAddress'])
 
-0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d
+
         else:
             print(f'Contract tx is pending to complated with tx: [{tx_hash.hex()}]')
 
