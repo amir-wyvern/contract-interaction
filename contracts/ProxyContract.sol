@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { IBackContract } from "./IBackContract.sol"
+import { IBackContract } from "./IBackContract.sol";
 contract ProxyContract {    
 
     address public backContract;
