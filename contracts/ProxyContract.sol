@@ -10,11 +10,11 @@ contract ProxyContract {
         backContract = _backContract;
     }
 
-    function setNumberOnBackContract(uint256 number) public returns(uint256) {
+    function setNumberOnBackContract(uint256 number) public  {
         IBackContract(backContract).setNumber(number);
     }
 
-    function getNumberOnBackContract() public returns(uint256) {
+    function getNumberOnBackContract() public view returns(uint256) {
         uint256 _number;
         _number = IBackContract(backContract).getNumber();
         return _number;
