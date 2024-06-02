@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import { IPermissionManagement } from "../interfaces/IPermissionManagement.sol";
 import { LibInfraFundStorage } from "../libraries/LibInfraFundStorage.sol";
-import { LibOwnership } from "../libraries/LibOwnership.sol";
+import { LibDiamond } from "../libraries/LibDiamond.sol";
 
 
-contract PermissionManagement { 
+contract PermissionManagement is IPermissionManagement { 
 
     event RegisterAuditor(address indexed auditor);
     event RevokeAuditor(address indexed auditor);
@@ -19,9 +20,13 @@ contract PermissionManagement {
     event RegisterClient(address indexed client);
     event RevokeClient(address indexed client);
 
+    function isAuditor(address _auditor) external view returns(bool) {
+        return LibInfraFundStorage.isAuditor(_auditor); 
+    }
+
     function registerAuditor(address _newAuditor) external {
 
-        require(LibOwnership.contractOwner() == msg.sender, "Not Permission");
+        require(LibDiamond.contractOwner() == msg.sender, "Not Permission");
         require(!LibInfraFundStorage.isAuditor(_newAuditor), "Auditor Already Exists");
 
         LibInfraFundStorage.infraFundStorage().auditors[_newAuditor] = true;
@@ -31,7 +36,7 @@ contract PermissionManagement {
 
     function revokeAuditor(address _auditor) external {
 
-        require(LibOwnership.contractOwner() == msg.sender, "Not Permission");
+        require(LibDiamond.contractOwner() == msg.sender, "Not Permission");
         require(LibInfraFundStorage.isAuditor(_auditor), "Auditor Not Exists");
 
         LibInfraFundStorage.infraFundStorage().auditors[_auditor] = false;
@@ -39,9 +44,13 @@ contract PermissionManagement {
         emit RevokeAuditor(_auditor);
     }
 
+    function isInvestor(address _investor) external view returns(bool) {
+        return LibInfraFundStorage.isInvestor(_investor);
+    }
+
     function registerInvestor(address _newInvestor) external {
             
-        require(LibOwnership.contractOwner() == msg.sender, "Not Permission");
+        require(LibDiamond.contractOwner() == msg.sender, "Not Permission");
         require(!LibInfraFundStorage.isInvestor(_newInvestor), "Investor Already Exists");
 
         LibInfraFundStorage.infraFundStorage().investors[_newInvestor] = true;
@@ -51,7 +60,7 @@ contract PermissionManagement {
 
     function revokeInvestor(address _investor) external {
 
-        require(LibOwnership.contractOwner() == msg.sender, "Not Permission");
+        require(LibDiamond.contractOwner() == msg.sender, "Not Permission");
         require(LibInfraFundStorage.isInvestor(_investor), "Investor Not Exists");
 
         LibInfraFundStorage.infraFundStorage().investors[_investor] = false;
@@ -59,9 +68,13 @@ contract PermissionManagement {
         emit RevokeInvestor(_investor);
     }
 
+    function isGC(address _GC) external view returns(bool) {
+        return LibInfraFundStorage.isGC(_GC);
+    }
+
     function registerGC(address _newGC) external {
             
-        require(LibOwnership.contractOwner() == msg.sender, "Not Permission");
+        require(LibDiamond.contractOwner() == msg.sender, "Not Permission");
         require(!LibInfraFundStorage.isGC(_newGC), "GC Already Exists");
 
         LibInfraFundStorage.infraFundStorage().generalConstructors[_newGC] = true;
@@ -71,7 +84,7 @@ contract PermissionManagement {
 
     function revokeGC(address _GC) external {
 
-        require(LibOwnership.contractOwner() == msg.sender, "Not Permission");
+        require(LibDiamond.contractOwner() == msg.sender, "Not Permission");
         require(!LibInfraFundStorage.isGC(_GC), "GC Not Exists");
 
         LibInfraFundStorage.infraFundStorage().generalConstructors[_GC] = false;
@@ -79,9 +92,13 @@ contract PermissionManagement {
         emit RevokeGC(_GC);
     }
 
+    function isClient(address _client) external view returns(bool) {
+        return LibInfraFundStorage.isVerifiedClient(_client);
+    }
+
     function registerClient(address _newClient) external {
             
-        require(LibOwnership.contractOwner() == msg.sender, "Not Permission");
+        require(LibDiamond.contractOwner() == msg.sender, "Not Permission");
         require(!LibInfraFundStorage.isVerifiedClient(_newClient), "Client Already Exists");
 
         LibInfraFundStorage.infraFundStorage().verifiedClients[_newClient] = true;
@@ -91,7 +108,7 @@ contract PermissionManagement {
 
     function revokeClient(address _client) external {
 
-        require(LibOwnership.contractOwner() == msg.sender, "Not Permission");
+        require(LibDiamond.contractOwner() == msg.sender, "Not Permission");
         require(LibInfraFundStorage.isVerifiedClient(_client), "Client Not Exists");
 
         LibInfraFundStorage.infraFundStorage().verifiedClients[_client] = false;
