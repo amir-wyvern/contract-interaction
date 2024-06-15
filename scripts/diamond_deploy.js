@@ -32,7 +32,8 @@ async function deployDiamond () {
   const FacetNames = [
     'DiamondLoupeFacet',
     'OwnershipFacet',
-    'PermissionManagement'
+    'PermissionManagement',
+    'Utils'
   ]
   const cut = []
   for (const FacetName of FacetNames) {
@@ -49,6 +50,13 @@ async function deployDiamond () {
 
   // upgrade diamond with facets
   console.log('')
+  
+  // const utils_contract = await ethers.getContractAt('Utils', cut[3].facetAddress)
+
+  // console.log("==> " , await utils_contract.generateHash('hello'));
+  // console.log("--> " , await utils_contract.verifyHash('hello', '0x516d57665659397933786a7369785467626439416f725178483756744d707a66783248615774736f555965636158' ));
+  // console.log("--> " , await utils_contract.verifyHash('helslo', '0x516d57665659397933786a7369785467626439416f725178483756744d707a66783248615774736f555965636158' ));
+
   const diamondCut = await ethers.getContractAt('IDiamondCut', diamond.address)
   let tx
   let receipt
